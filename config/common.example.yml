@@ -1,0 +1,5 @@
+accounts:
+  v2ex:
+    - username: username
+      password: password
+      schedule: "1 8 * * *"

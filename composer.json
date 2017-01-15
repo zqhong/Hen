@@ -1,0 +1,28 @@
+{
+  "name": "zqhong/hen",
+  "description": "Sign Tool",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "zqhong",
+      "email": "zqh0513@gmail.com"
+    }
+  ],
+  "require": {
+    "hellogerard/jobby": "^3.2",
+    "monolog/monolog": "^1.22",
+    "hassankhan/config": "^0.10.0",
+    "symfony/yaml": "^3.2",
+    "guzzlehttp/guzzle": "^6.2",
+    "symfony/css-selector": "^3.2",
+    "symfony/dom-crawler": "^3.2",
+    "fabpot/goutte": "^3.2",
+    "symfony/event-dispatcher": "^3.2",
+    "pimple/pimple": "^3.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hen\\": "src"
+    }
+  }
+}
