@@ -3,3 +3,12 @@ accounts:
     - username: username
       password: password
       schedule: "1 8 * * *"
+
+appium:
+  host: 127.0.0.1
+  port: 4723
+  deviceName: xxxx
+  platformName: Android
+  platformVersion: 6.0
+  unicodeKeyboard: true
+  resetKeyboard: true

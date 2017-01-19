@@ -6,7 +6,7 @@ namespace Hen\App;
 
 use Hen\Exception\MatchNothingException;
 
-class V2ex extends Adapter
+class V2ex extends WebSignAdapter
 {
     const HOME_URL = 'https://www.v2ex.com/';
     const LOGIN_URL = 'https://www.v2ex.com/signin';

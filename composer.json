@@ -13,12 +13,10 @@
     "monolog/monolog": "^1.22",
     "hassankhan/config": "^0.10.0",
     "symfony/yaml": "^3.2",
-    "guzzlehttp/guzzle": "^6.2",
-    "symfony/css-selector": "^3.2",
-    "symfony/dom-crawler": "^3.2",
     "fabpot/goutte": "^3.2",
     "symfony/event-dispatcher": "^3.2",
-    "pimple/pimple": "^3.0"
+    "pimple/pimple": "^3.0",
+    "appium/php-client": "^0.2.1"
   },
   "autoload": {
     "psr-4": {

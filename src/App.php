@@ -3,7 +3,7 @@
 
 namespace Hen;
 
-use Hen\App\Adapter;
+use Hen\Core\SignAdapter;
 use Hen\Event\BootstrapEvent;
 use Monolog\Logger;
 use Noodlehaus\Config;
@@ -42,6 +42,7 @@ class App extends Container
                 if (stripos($fileName, 'example.yml') === false) {
                     return true;
                 }
+                return false;
             });
 
             return new Config($configFiles);
@@ -58,7 +59,7 @@ class App extends Container
 
     /**
      * @param string $appName
-     * @return Adapter
+     * @return SignAdapter
      */
     public function platform($appName)
     {
