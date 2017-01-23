@@ -23,7 +23,6 @@ foreach (App::get()->config->get('accounts') as $appName => $accounts) {
             'enabled' => true,
             'output' => sprintf('%s/data/logs/%s.log', rtrim(PATH_ROOT), $appName),
         ]);
-
     }
 }
 

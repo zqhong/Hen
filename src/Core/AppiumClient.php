@@ -3,7 +3,6 @@
 
 namespace Hen\Core;
 
-
 use PHPUnit_Extensions_Selenium2TestCase_Element;
 
 class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
@@ -96,5 +95,4 @@ class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
     {
         return $this->swipe(10, 0, 0, 0);
     }
-
 }

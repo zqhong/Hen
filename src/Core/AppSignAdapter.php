@@ -3,7 +3,6 @@
 
 namespace Hen\Core;
 
-
 abstract class AppSignAdapter extends SignAdapter
 {
     /**

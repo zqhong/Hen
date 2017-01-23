@@ -6,7 +6,6 @@ namespace Hen\Core;
 use Goutte\Client as GoutteClient;
 use Hen\App;
 
-
 abstract class WebSignAdapter extends SignAdapter
 {
     /**
