@@ -16,7 +16,8 @@
     "fabpot/goutte": "^3.2",
     "symfony/event-dispatcher": "^3.2",
     "pimple/pimple": "^3.0",
-    "appium/php-client": "^0.2.1"
+    "appium/php-client": "^0.2.1",
+    "sentry/sentry": "^1.6"
   },
   "autoload": {
     "psr-4": {

@@ -36,8 +36,10 @@ abstract class SignAdapter
 
     public function __construct()
     {
-        $this->logger->debug('SignAdapter construct');
+        $this->logger = App::get()->logger;
         $this->config = App::get()->config;
+        
+        $this->logger->debug('SignAdapter construct');
         $this->init();
     }
 

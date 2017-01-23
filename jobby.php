@@ -14,15 +14,19 @@ foreach (App::get()->config->get('accounts') as $appName => $accounts) {
         $schedule = $account['schedule'];
 
         if (empty($username) || empty($password)) {
+            App::get()->logger->warning('jobby - add job, username or password empty', ['account' => $account]);
             continue;
         }
 
-        $jobby->add(sprintf('%s-%s', $appName, $username), [
+        $jobName = sprintf('%s-%s', $appName, $username);
+        $params = [
             'command' => sprintf('php %s %s %s %s', $jobWorkerPath, $appName, $username, $password),
             'schedule' => $schedule,
             'enabled' => true,
-            'output' => sprintf('%s/data/logs/%s.log', rtrim(PATH_ROOT), $appName),
-        ]);
+            'output' => sprintf('%s/data/logs/%s.jobby.log', rtrim(PATH_ROOT), $appName),
+        ];
+        App::get()->logger->debug(sprintf('Add a jobby job, name: %s', $jobName), ['params' => $params]);
+        $jobby->add($jobName, $params);
     }
 }
 

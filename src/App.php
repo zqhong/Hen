@@ -5,6 +5,8 @@ namespace Hen;
 
 use Hen\Core\SignAdapter;
 use Hen\Event\BootstrapEvent;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\RavenHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Noodlehaus\Config;
@@ -59,8 +61,20 @@ class App extends Container
                 $logger->pushHandler(new StreamHandler(implode(DIRECTORY_SEPARATOR, [$this->DATA_PATH, 'logs', 'app.debug']), Logger::DEBUG));
             }
 
+            $sentryClientUrl = $config->get('app.sentryClientUrl');
+            if (!empty($sentryClientUrl)) {
+                $sentryClient = new \Raven_Client($sentryClientUrl);
+                $sentryClient->install();
+                
+                $sentryHandler = new RavenHandler($sentryClient, Logger::WARNING);
+                $sentryHandler->setFormatter(new LineFormatter("%message% %context% %extra%\n"));
+                $logger->pushHandler($sentryHandler);
+            }
+
             return $logger;
         };
+
+
 
         $this->logger->debug('app bootstrap...');
         $this->dispatcher->dispatch(BootstrapEvent::NAME, new BootstrapEvent());
