@@ -5,6 +5,7 @@ use Jobby\Jobby;
 require_once "bootstrap/autoload.php";
 
 $jobby = new Jobby();
+$jobWorkerPath = implode(DIRECTORY_SEPARATOR, [PATH_ROOT, 'bin', 'job-worker.php']);
 
 foreach (App::get()->config->get('accounts') as $appName => $accounts) {
     foreach ($accounts as $account) {
@@ -17,17 +18,11 @@ foreach (App::get()->config->get('accounts') as $appName => $accounts) {
         }
 
         $jobby->add(sprintf('%s-%s', $appName, $username), [
-            'closure' => function () use ($appName, $username, $password, $schedule) {
-                App::get()->platform($appName)
-                    ->setUsername($username)
-                    ->setPassword($password)
-                    ->sign();
-            },
+            'command' => sprintf('php %s %s %s %s', $jobWorkerPath, $appName, $username, $password),
             'schedule' => $schedule,
             'enabled' => true,
             'output' => sprintf('%s/data/logs/%s.log', rtrim(PATH_ROOT), $appName),
         ]);
-
     }
 }
 

@@ -3,7 +3,6 @@
 
 namespace Hen\Core;
 
-
 use Hen\App;
 use Hen\Event\AfterSignEvent;
 use Hen\Event\BeforeSignEvent;
@@ -40,7 +39,6 @@ abstract class SignAdapter
         $this->logger->debug('SignAdapter construct');
         $this->config = App::get()->config;
         $this->init();
-
     }
 
     protected function init()

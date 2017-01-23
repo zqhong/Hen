@@ -19,7 +19,7 @@ class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
      * @var Logger
      */
     protected $logger;
-    
+
     public function __construct($name = NULL, array $data = array(), $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
@@ -44,7 +44,7 @@ class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
             'element' => $element,
         ]);
 
-        if ($element instanceof  PHPUnit_Extensions_Selenium2TestCase_Element) {
+        if ($element instanceof PHPUnit_Extensions_Selenium2TestCase_Element) {
             return call_user_func_array([$element, $action], $params);
         }
 
@@ -63,7 +63,7 @@ class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
             if ($element instanceof PHPUnit_Extensions_Selenium2TestCase_Element) {
                 return $element;
             }
-            $this->logger->debug(sprintf('AppiumClient - by method - try count: %d', $i+1));
+            $this->logger->debug(sprintf('AppiumClient - by method - try count: %d', $i + 1));
             sleep(1);
         }
 
@@ -118,5 +118,4 @@ class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
     {
         return $this->swipe(10, 0, 0, 0);
     }
-
 }

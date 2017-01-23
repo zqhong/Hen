@@ -3,7 +3,6 @@
 
 namespace Hen\Exception;
 
-
 /**
  * Class SignFailedException
  *
@@ -11,5 +10,4 @@ namespace Hen\Exception;
  */
 class SignFailedException extends \Exception
 {
-
 }
