@@ -42,7 +42,7 @@ RUN chmod +x $HEN_INSTALL_DIR/docker/bin/composer-setup.php \
 WORKDIR $HEN_INSTALL_DIR
 RUN composer install --no-dev --prefer-source
 RUN mkdir -p /var/spool/cron/crontabs \
-    && echo "* * * * * cd $HEN_INSTALL_DIR/ && php jobby.php >> $HEN_INSTALL_DIR/data/logs/jobby.log 2>> $HEN_INSTALL_DIR/data/logs/jobby.error" > /var/spool/cron/crontabs/root \
+    && echo "* * * * * cd $HEN_INSTALL_DIR/ && php jobby.php" > /var/spool/cron/crontabs/root \
     && chmod 600 /var/spool/cron/crontabs/root
 
 RUN chmod +x $HEN_INSTALL_DIR/docker/bin/run.sh
