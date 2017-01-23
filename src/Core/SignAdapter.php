@@ -9,6 +9,7 @@ use Hen\Event\AfterSignEvent;
 use Hen\Event\BeforeSignEvent;
 use Hen\Exception\LoginFailedException;
 use Hen\Exception\SignFailedException;
+use Monolog\Logger;
 use Noodlehaus\Config;
 
 abstract class SignAdapter
@@ -29,8 +30,14 @@ abstract class SignAdapter
      */
     protected $password;
 
+    /**
+     * @var Logger
+     */
+    protected $logger;
+
     public function __construct()
     {
+        $this->logger->debug('SignAdapter construct');
         $this->config = App::get()->config;
         $this->init();
 
@@ -38,7 +45,7 @@ abstract class SignAdapter
 
     protected function init()
     {
-
+        $this->logger->debug('SignAdapter init');
     }
 
     /**
@@ -64,13 +71,17 @@ abstract class SignAdapter
     public function sign()
     {
         App::get()->dispatcher->dispatch(BeforeSignEvent::NAME, new BeforeSignEvent());
+        $this->logger->info('SignAdapter doLogin');
         $this->doLogin();
         if ($this->isLogin() === false) {
+            $this->logger->error('SignAdapter loginFailed', $this);
             throw new LoginFailedException();
         }
 
+        $this->logger->info('SignAdapter doSign');
         $this->doSign();
         if ($this->isSign() === false) {
+            $this->logger->error('SIgnAdapter signFailed', $this);
             throw new SignFailedException();
         }
 

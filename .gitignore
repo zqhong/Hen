@@ -2,3 +2,5 @@
 config/*.yml
 !config/*.example.yml
 vendor/*
+data/logs/*
+!data/logs/.gitkeep

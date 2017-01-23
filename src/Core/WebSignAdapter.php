@@ -16,6 +16,8 @@ abstract class WebSignAdapter extends SignAdapter
 
     public function init()
     {
+        parent::init();
+        
         $this->httpClient = new GoutteClient();
 
         $this->setDefaultHeaders();

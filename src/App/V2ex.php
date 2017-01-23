@@ -4,6 +4,7 @@
 namespace Hen\App;
 
 
+use Hen\Core\WebSignAdapter;
 use Hen\Exception\MatchNothingException;
 
 class V2ex extends WebSignAdapter
@@ -23,6 +24,7 @@ class V2ex extends WebSignAdapter
         $form[$usernameFieldName] = $this->username;
         $form[$passwordFieldName] = $this->password;
 
+        $this->logger->debug('V2EX - DoLogin', ['form' => $form]);
         $this->httpClient->submit($form);
     }
 
@@ -33,10 +35,13 @@ class V2ex extends WebSignAdapter
 
         // 页面需要同时存在当前登录用户名和登出这两个字符串，才认为登录成功。
         $pageContent = $crawler->html();
+        $this->logger->debug('V2EX - IsLogin', ['pageContent' => $pageContent]);
         if (strpos($pageContent, $this->username) !== false && strpos($pageContent, '登出') !== false) {
+            $this->logger->debug('V2EX - IsLogin - true');
             return true;
         }
 
+        $this->logger->debug('V2EX - IsLogin - false. Check pageContent variable');
         return false;
     }
 
@@ -46,12 +51,15 @@ class V2ex extends WebSignAdapter
 
         // <input type="button" class="super normal button" value="领取 X 铜币" onclick="location.href = '/mission/daily/redeem?once=98209';">
         $onClickValue = $crawler->filter('input[value="领取 X 铜币"]')->first()->attr('onclick');
+        $this->logger->debug('V2EX - DoSign', ['onClickValue' => $onClickValue]);
 
         $matches = [];
         if (preg_match('@(/mission/daily/redeem\?once=\d+)@', $onClickValue, $matches) === 0) {
+            $this->logger->debug('V2EX - DoSign - false. Match nothing, check onClickValue.');
             throw new MatchNothingException();
         }
         $uri = trim(self::HOME_URL, '/') . $matches[0];
+        $this->logger->debug('V2EX - DoSign - true', ['uri' => $uri]);
 
         $this->httpClient->request('GET', $uri);
     }
@@ -60,10 +68,14 @@ class V2ex extends WebSignAdapter
     {
         $crawler = $this->httpClient->request('GET', self::SIGN_URL);
 
-        if (strpos($crawler->html(), '每日登录奖励已领取') === false) {
+        $pageContent = $crawler->html();
+        $this->logger->debug('V2EX - IsSign', ['pageContent' => $pageContent]);
+        if (strpos($pageContent, '每日登录奖励已领取') === false) {
+            $this->logger->debug('V2EX - IsSign - false');
             return false;
         }
 
+        $this->logger->debug('V2EX - IsSign - true');
         return true;
     }
 }

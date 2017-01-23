@@ -5,6 +5,7 @@ namespace Hen;
 
 use Hen\Core\SignAdapter;
 use Hen\Event\BootstrapEvent;
+use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Noodlehaus\Config;
 use Pimple\Container;
@@ -17,6 +18,9 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  * @property EventDispatcher $dispatcher
  * @property Logger $logger
  * @property Config $config
+ * @property string DATA_PATH
+ * @property string CONFIG_PATH
+ * @property string APP_PATH
  */
 class App extends Container
 {
@@ -26,12 +30,10 @@ class App extends Container
     {
         parent::__construct();
 
+        $this->setCorePath();
+
         $this['dispatcher'] = function () {
             return new EventDispatcher();
-        };
-
-        $this['logger'] = function () {
-            return new Logger('hen');
         };
 
         $this['config'] = function () {
@@ -48,8 +50,34 @@ class App extends Container
             return new Config($configFiles);
         };
 
+        $config = $this['config'];
+        $this['logger'] = function () use ($config) {
+            $logger = new Logger('hen');
+            $logger->pushHandler(new StreamHandler(implode(DIRECTORY_SEPARATOR, [$this->DATA_PATH, 'logs', 'app.warning']), Logger::WARNING));
+
+            if ($config->get('app.debug') === true) {
+                $logger->pushHandler(new StreamHandler(implode(DIRECTORY_SEPARATOR, [$this->DATA_PATH, 'logs', 'app.debug']), Logger::DEBUG));
+            }
+
+            return $logger;
+        };
+
+        $this->logger->debug('app bootstrap...');
         $this->dispatcher->dispatch(BootstrapEvent::NAME, new BootstrapEvent());
         self::$instance = $this;
+    }
+
+    protected function setCorePath()
+    {
+        $this['DATA_PATH'] = function () {
+            return PATH_ROOT . DIRECTORY_SEPARATOR . 'data';
+        };
+        $this['CONFIG_PATH'] = function () {
+            return PATH_ROOT . DIRECTORY_SEPARATOR . 'config';
+        };
+        $this['APP_PATH'] = function () {
+            return PATH_ROOT . DIRECTORY_SEPARATOR . 'src';
+        };
     }
 
     public static function get()
@@ -64,7 +92,11 @@ class App extends Container
     public function platform($appName)
     {
         $objName = sprintf('Hen\\App\\%s', $appName);
-        return new $objName();
+        $objInstance = new $objName();
+
+        $this->logger->debug(sprintf('Platform: %s, objName: %s', $appName, $objName), $objInstance);
+
+        return $objInstance;
     }
 
     public function __get($name)

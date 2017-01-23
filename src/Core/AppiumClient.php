@@ -4,6 +4,8 @@
 namespace Hen\Core;
 
 
+use Hen\App;
+use Monolog\Logger;
 use PHPUnit_Extensions_Selenium2TestCase_Element;
 
 class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
@@ -12,6 +14,17 @@ class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
      * @var int
      */
     protected $findEleRetryCount = 5;
+
+    /**
+     * @var Logger
+     */
+    protected $logger;
+    
+    public function __construct($name = NULL, array $data = array(), $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+        $this->logger = App::get()->logger;
+    }
 
     /**
      * @param $strategy
@@ -23,6 +36,14 @@ class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
     public function doSafeAction($strategy, $value, $action, array $params = array())
     {
         $element = $this->by($strategy, $value);
+        $this->logger->debug('AppiumClient - doSafeAction', [
+            'strategy' => $strategy,
+            'value' => $value,
+            'action' => $action,
+            'params' => $params,
+            'element' => $element,
+        ]);
+
         if ($element instanceof  PHPUnit_Extensions_Selenium2TestCase_Element) {
             return call_user_func_array([$element, $action], $params);
         }
@@ -42,6 +63,7 @@ class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
             if ($element instanceof PHPUnit_Extensions_Selenium2TestCase_Element) {
                 return $element;
             }
+            $this->logger->debug(sprintf('AppiumClient - by method - try count: %d', $i+1));
             sleep(1);
         }
 
@@ -58,7 +80,7 @@ class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
         try {
             return parent::by($strategy, $value);
         } catch (\Exception $e) {
-            // TODO: log
+            $this->logger->error('AppiumClient safeBy error', ['exception' => $e]);
             return false;
         }
     }
@@ -84,7 +106,7 @@ class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
         try {
             return parent::swipe($startX, $startY, $endX, $endY, $duration);
         } catch (\Exception $e) {
-            // TODO: log
+            $this->logger->error('AppiumClient swipe error', ['excpetion' => $e]);
             return false;
         }
     }

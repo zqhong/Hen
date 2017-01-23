@@ -13,6 +13,7 @@ abstract class AppSignAdapter extends SignAdapter
 
     protected function init()
     {
+        parent::init();
         $this->appiumClient = new AppiumClient();
         $this->appiumClient->setPort($this->config->get('appium.port'));
         $this->appiumClient->setDesiredCapabilities([
