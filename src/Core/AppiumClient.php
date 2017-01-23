@@ -3,7 +3,6 @@
 
 namespace Hen\Core;
 
-
 use Hen\App;
 use Monolog\Logger;
 use PHPUnit_Extensions_Selenium2TestCase_Element;
@@ -20,7 +19,7 @@ class AppiumClient extends \PHPUnit_Extensions_AppiumTestCase
      */
     protected $logger;
 
-    public function __construct($name = NULL, array $data = array(), $dataName = '')
+    public function __construct($name = null, array $data = array(), $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
         $this->logger = App::get()->logger;
