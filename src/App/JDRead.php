@@ -3,7 +3,6 @@
 
 namespace Hen\App;
 
-
 use Hen\Core\AppSignAdapter;
 
 class JDRead extends AppSignAdapter
