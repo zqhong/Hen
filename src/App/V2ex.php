@@ -4,6 +4,7 @@
 namespace Hen\App;
 
 
+use Hen\Core\WebSignAdapter;
 use Hen\Exception\MatchNothingException;
 
 class V2ex extends WebSignAdapter
