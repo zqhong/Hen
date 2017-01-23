@@ -1,6 +1,8 @@
 # Hen
 Hen 是一个由 PHP 编写的签到工具，目前仅适配了 V2EX 和京东阅读。
 
+[![StyleCI](https://styleci.io/repos/79006161/shield?branch=master)](https://styleci.io/repos/79006161)
+
 # 安装
 从 GitHub 中下载该项目
 ```
